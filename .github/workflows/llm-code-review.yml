@@ -20,11 +20,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // GitHub CopilotにPRレビューをリクエスト
+            // Request PR review from GitHub Copilot
             const { owner, repo, number } = context.issue;
             
             try {
-              // Copilotをレビュアーとして追加
+              // Add Copilot as a reviewer
               await github.rest.pulls.requestReviewers({
                 owner: owner,
                 repo: repo,
@@ -32,8 +32,8 @@ jobs:
                 reviewers: ['copilot[bot]']
               });
               
-              console.log('GitHub Copilotにレビューをリクエストしました');
+              console.log('Successfully requested review from GitHub Copilot');
             } catch (error) {
-              console.log('Copilotレビューのリクエストに失敗:', error.message);
-              // エラーが発生してもワークフローは続行
+              console.log('Failed to request Copilot review:', error.message);
+              // Continue workflow even if error occurs
             }

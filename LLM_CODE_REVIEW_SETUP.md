@@ -52,9 +52,11 @@ Each plan has a monthly review limit:
 ## Troubleshooting
 
 ### Copilot not appearing in reviewers
+
 - Verify Copilot is enabled in the organization
 - Confirm appropriate plan subscription
 
 ### Review not executing
+
 - PR might be too large (consider splitting)
 - Monthly quota might be reached
