@@ -40,6 +40,19 @@ task install
 go install github.com/orangekame3/qasmfmt@latest
 ```
 
+### Using Docker
+
+```bash
+# Pull the image
+docker pull ghcr.io/orangekame3/qasmfmt:latest
+
+# Format a file
+docker run --rm -v $(pwd):/workspace ghcr.io/orangekame3/qasmfmt:latest /workspace/example.qasm
+
+# Format in-place
+docker run --rm -v $(pwd):/workspace ghcr.io/orangekame3/qasmfmt:latest -w /workspace/example.qasm
+```
+
 ## Usage
 
 ### Basic Usage
@@ -89,6 +102,53 @@ qasmfmt completion bash > /usr/local/etc/bash_completion.d/qasmfmt
 
 # Show version
 qasmfmt version
+```
+
+## CI/CD Integration
+
+### GitHub Actions
+
+To integrate qasmfmt into your CI pipeline:
+
+#### Using the binary
+
+```yaml
+name: QASM Format Check
+
+on: [push, pull_request]
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install qasmfmt
+        run: |
+          curl -L https://github.com/orangekame3/qasmfmt/releases/latest/download/qasmfmt_Linux_x86_64.tar.gz | tar -xz
+          sudo mv qasmfmt /usr/local/bin/
+      
+      - name: Check QASM formatting
+        run: qasmfmt -c *.qasm
+```
+
+#### Using Docker
+
+```yaml
+name: QASM Format Check
+
+on: [push, pull_request]
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check QASM formatting
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace \
+            ghcr.io/orangekame3/qasmfmt:latest -c /workspace/*.qasm
 ```
 
 ## Example
@@ -195,7 +255,7 @@ Contributions are welcome! Please see [DEVELOPMENT.md](DEVELOPMENT.md) for devel
 
 ## License
 
-[MIT License](LICENSE)
+[Apache License 2.0](LICENSE)
 
 ## Related Projects
 
