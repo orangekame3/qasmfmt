@@ -1,0 +1,69 @@
+version: 2
+
+project_name: qasmfmt
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.ShortCommit}}
+      - -X main.buildDate={{.Date}}
+      - -X github.com/orangekame3/qasmfmt/cmd.version={{.Version}}
+      - -X github.com/orangekame3/qasmfmt/cmd.commit={{.ShortCommit}}
+      - -X github.com/orangekame3/qasmfmt/cmd.buildDate={{.Date}}
+    binary: qasmfmt
+
+archives:
+  - format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+release:
+  github:
+    owner: orangekame3
+    name: qasmfmt
+  prerelease: auto
+  draft: false
+
+brews:
+  - repository:
+      owner: orangekame3
+      name: homebrew-tap
+    homepage: "https://github.com/orangekame3/qasmfmt"
+    description: "A formatter for OpenQASM 3 files"
+    license: "MIT"
+    test: |
+      system "#{bin}/qasmfmt", "--version"

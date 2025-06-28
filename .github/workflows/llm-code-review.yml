@@ -1,0 +1,39 @@
+name: Auto Request Copilot Review
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  request-copilot-review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Request GitHub Copilot Review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Request PR review from GitHub Copilot
+            const { owner, repo, number } = context.issue;
+            
+            try {
+              // Add Copilot as a reviewer
+              await github.rest.pulls.requestReviewers({
+                owner: owner,
+                repo: repo,
+                pull_number: number,
+                reviewers: ['copilot[bot]']
+              });
+              
+              console.log('Successfully requested review from GitHub Copilot');
+            } catch (error) {
+              console.log('Failed to request Copilot review:', error.message);
+              // Continue workflow even if error occurs
+            }
