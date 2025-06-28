@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "qasmfmt [file...]",
@@ -25,11 +24,9 @@ Examples:
   qasmfmt -c example.qasm            # Check if file is formatted
   qasmfmt -i 4 example.qasm          # Use 4 spaces for indentation
   qasmfmt *.qasm                     # Format multiple files`,
-		Args:    cobra.MinimumNArgs(1),
-		RunE:    cmd.RunRootFormat,
+		Args: cobra.MinimumNArgs(1),
+		RunE: cmd.RunRootFormat,
 	}
-
-	
 
 	// Global flags
 	rootCmd.PersistentFlags().BoolP("write", "w", false, "write result to (source) file instead of stdout")
@@ -49,4 +46,3 @@ Examples:
 		os.Exit(1)
 	}
 }
-

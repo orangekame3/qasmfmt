@@ -199,10 +199,10 @@ tasks:
         cat > examples/bell_state.qasm << 'EOF'
         OPENQASM 3.0;
         include "stdgates.qasm";
-        
+
         qubit[2] q;
         bit[2] c;
-        
+
         h q[0];
         cx q[0], q[1];
         measure q -> c;
@@ -211,19 +211,19 @@ tasks:
         cat > examples/grover.qasm << 'EOF'
         OPENQASM 3.0;
         include "stdgates.qasm";
-        
+
         qubit[3] q;
         bit[3] c;
-        
+
         // Initialize superposition
         h q[0];
         h q[1];
         h q[2];
-        
+
         // Oracle
         cz q[0], q[2];
         cz q[1], q[2];
-        
+
         // Diffuser
         h q[0];
         h q[1];
@@ -238,7 +238,7 @@ tasks:
         h q[0];
         h q[1];
         h q[2];
-        
+
         measure q -> c;
         EOF
 
