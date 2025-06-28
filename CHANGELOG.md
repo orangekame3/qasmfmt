@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.0.5](https://github.com/orangekame3/qasmfmt/compare/v0.0.4...v0.0.5) - 2025-06-28
+- Enhance README.md with clarification on formatting multiple files by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/18
+- Enhance formatting command for stdin support and error handling by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/20
+
 ## [v0.0.4](https://github.com/orangekame3/qasmfmt/compare/v0.0.3...v0.0.4) - 2025-06-28
 - Update versioning and build information by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/10
 - Remove unnecessary whitespace in Taskfile.yaml and main.go by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/12
