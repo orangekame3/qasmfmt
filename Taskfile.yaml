@@ -122,7 +122,7 @@ tasks:
   lint:
     desc: Run linters
     cmds:
-      - go fmt ./...
+      - go fmt $(go list ./... | grep -v 'gen')
       - go vet $(go list ./... | grep -v 'gen')
       - task: lint:golangci
 
