@@ -130,6 +130,12 @@ func (f *Formatter) getStatementType(stmtOrScope parser.IStatementOrScopeContext
 		if stmt.GateStatement() != nil {
 			return "gate_definition"
 		}
+		if stmt.BarrierStatement() != nil {
+			return "barrier"
+		}
+		if stmt.ResetStatement() != nil {
+			return "reset"
+		}
 		if strings.HasPrefix(stmt.GetText(), "include") {
 			return "include"
 		}
@@ -211,6 +217,14 @@ func (f *Formatter) formatStatement(stmt parser.IStatementContext, indent int) s
 
 	if ifStmt := stmt.IfStatement(); ifStmt != nil {
 		return f.formatIf(ifStmt, indent)
+	}
+
+	if barrierStmt := stmt.BarrierStatement(); barrierStmt != nil {
+		return f.formatBarrier(barrierStmt, indent)
+	}
+
+	if resetStmt := stmt.ResetStatement(); resetStmt != nil {
+		return f.formatReset(resetStmt, indent)
 	}
 
 	text := strings.TrimSpace(stmt.GetText())
@@ -310,28 +324,41 @@ func (f *Formatter) formatDeclarationText(text string) string {
 
 func (f *Formatter) formatGateCallText(text string) string {
 	// Handle gate calls like "hq", "hq[0]" -> "h q", "h q[0]" and "cxq[0],q[1]" -> "cx q[0], q[1]"
+	// Also handle parameterized gates like "rz(pi/4)q[0]" -> "rz(pi/4) q[0]"
 
-	// Case 1: Simple gate with identifier (hq -> h q)
-	re1 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)([a-zA-Z_][a-zA-Z0-9_]*)$`)
+	// Case 1: Parameterized gate with qubit (rz(pi/4)q[0] -> rz(pi/4) q[0])
+	re1 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)\(([^)]+)\)([a-zA-Z_][a-zA-Z0-9_]*(?:\[[^\]]+\])?)$`)
 	if re1.MatchString(text) {
-		return re1.ReplaceAllString(text, "$1 $2")
+		return re1.ReplaceAllString(text, "$1($2) $3")
 	}
 
-	// Case 2: Gate with indexed qubit (hq[0] -> h q[0])
-	re2 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)([a-zA-Z_][a-zA-Z0-9_]*\[[^\]]+\])$`)
+	// Case 2: Parameterized gate with multiple qubits (cphase(pi/2)q[0],q[1] -> cphase(pi/2) q[0], q[1])
+	re2 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)\(([^)]+)\)([a-zA-Z_][a-zA-Z0-9_]*(?:\[[^\]]+\])?),([a-zA-Z_][a-zA-Z0-9_]*(?:\[[^\]]+\])?)$`)
 	if re2.MatchString(text) {
-		return re2.ReplaceAllString(text, "$1 $2")
+		return re2.ReplaceAllString(text, "$1($2) $3, $4")
 	}
 
-	// Case 3: Two-qubit gate (cxq[0],q[1] -> cx q[0], q[1])
-	re3 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)([a-zA-Z_][a-zA-Z0-9_]*\[[^\]]+\]),([a-zA-Z_][a-zA-Z0-9_]*\[[^\]]+\])$`)
+	// Case 3: Simple gate with identifier (hq -> h q)
+	re3 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)([a-zA-Z_][a-zA-Z0-9_]*)$`)
 	if re3.MatchString(text) {
-		return re3.ReplaceAllString(text, "$1 $2, $3")
+		return re3.ReplaceAllString(text, "$1 $2")
+	}
+
+	// Case 4: Gate with indexed qubit (hq[0] -> h q[0])
+	re4 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)([a-zA-Z_][a-zA-Z0-9_]*\[[^\]]+\])$`)
+	if re4.MatchString(text) {
+		return re4.ReplaceAllString(text, "$1 $2")
+	}
+
+	// Case 5: Two-qubit gate (cxq[0],q[1] -> cx q[0], q[1])
+	re5 := regexp.MustCompile(`^([a-zA-Z_][a-zA-Z0-9_]*)([a-zA-Z_][a-zA-Z0-9_]*\[[^\]]+\]),([a-zA-Z_][a-zA-Z0-9_]*\[[^\]]+\])$`)
+	if re5.MatchString(text) {
+		return re5.ReplaceAllString(text, "$1 $2, $3")
 	}
 
 	// Handle comma-separated qubits for already well-formed cases
-	re4 := regexp.MustCompile(`,\s*`)
-	result := re4.ReplaceAllString(text, ", ")
+	re6 := regexp.MustCompile(`,\s*`)
+	result := re6.ReplaceAllString(text, ", ")
 
 	return result
 }
@@ -515,20 +542,127 @@ func (f *Formatter) extractComments(tokenStream *antlr.CommonTokenStream) []Comm
 
 // formatProgramWithComments formats the program while preserving comments
 func (f *Formatter) formatProgramWithComments(program *parser.ProgramContext, comments []Comment) string {
-	// For now, fall back to the regular formatter and append comments at the end
-	// This is a simplified implementation - a more sophisticated one would
-	// position comments correctly relative to statements
+	// Improved comment preservation - try to associate comments with their statements
+	if len(comments) == 0 {
+		return f.formatProgram(program)
+	}
 
-	result := f.formatProgram(program)
+	var lines []string
+	var lastStatementType string
+	commentIndex := 0
 
-	// Add comments at the end for now
-	if len(comments) > 0 {
-		result = strings.TrimSuffix(result, "\n")
-		for _, comment := range comments {
-			result += "\n" + comment.Text
+	// Handle version
+	if program.Version() != nil {
+		versionLine := "OPENQASM 3.0;"
+		// Check if there's a comment on the same line
+		if commentIndex < len(comments) && comments[commentIndex].Line == 1 {
+			versionLine += " " + comments[commentIndex].Text
+			commentIndex++
 		}
+		lines = append(lines, versionLine)
+		lastStatementType = "version"
+	}
+
+	currentLine := 2 // Start from line 2 after version
+	
+	for _, stmtOrScope := range program.AllStatementOrScope() {
+		if stmtOrScope == nil {
+			continue
+		}
+
+		// Add standalone comments before this statement
+		for commentIndex < len(comments) && comments[commentIndex].Line < currentLine {
+			comment := comments[commentIndex]
+			if f.shouldAddEmptyLine(lastStatementType, "comment") {
+				lines = append(lines, "")
+			}
+			lines = append(lines, comment.Text)
+			commentIndex++
+			lastStatementType = "comment"
+		}
+
+		formatted := f.formatStatementOrScope(stmtOrScope, 0)
+		if strings.TrimSpace(formatted) != "" && !strings.HasSuffix(formatted, ";;") {
+			currentType := f.getStatementType(stmtOrScope)
+
+			// Add empty line between different types of statements
+			if f.shouldAddEmptyLine(lastStatementType, currentType) {
+				lines = append(lines, "")
+			}
+
+			// Check if there's a comment on the same line as this statement
+			if commentIndex < len(comments) && comments[commentIndex].Line == currentLine {
+				formatted += " " + comments[commentIndex].Text
+				commentIndex++
+			}
+
+			lines = append(lines, formatted)
+			lastStatementType = currentType
+		}
+		currentLine++
+	}
+
+	// Add any remaining comments at the end
+	for commentIndex < len(comments) {
+		comment := comments[commentIndex]
+		lines = append(lines, comment.Text)
+		commentIndex++
+	}
+
+	result := strings.Join(lines, "\n")
+	if f.newline && !strings.HasSuffix(result, "\n") {
 		result += "\n"
 	}
 
 	return result
+}
+
+func (f *Formatter) formatBarrier(ctx parser.IBarrierStatementContext, indent int) string {
+	text := ctx.GetText()
+	text = strings.TrimSuffix(text, ";")
+	
+	// Handle "barrier" or "barrier q" or "barrier q[0], q[1]"
+	if strings.TrimSpace(text) == "barrier" {
+		return f.indent(indent) + "barrier;"
+	}
+	
+	// Format with operands
+	formatted := f.formatBarrierText(text)
+	return f.indent(indent) + formatted + ";"
+}
+
+func (f *Formatter) formatReset(ctx parser.IResetStatementContext, indent int) string {
+	text := ctx.GetText()
+	text = strings.TrimSuffix(text, ";")
+	formatted := f.formatResetText(text)
+	return f.indent(indent) + formatted + ";"
+}
+
+func (f *Formatter) formatBarrierText(text string) string {
+	// Handle "barrierq" -> "barrier q" and "barrierq[0],q[1]" -> "barrier q[0], q[1]"
+	re := regexp.MustCompile(`^barrier\s*(.+)$`)
+	if re.MatchString(text) {
+		matches := re.FindStringSubmatch(text)
+		if len(matches) > 1 {
+			operands := strings.TrimSpace(matches[1])
+			// Format comma-separated operands
+			re2 := regexp.MustCompile(`,\s*`)
+			operands = re2.ReplaceAllString(operands, ", ")
+			return "barrier " + operands
+		}
+	}
+	return text
+}
+
+func (f *Formatter) formatResetText(text string) string {
+	// Handle "resetq" -> "reset q" and "resetq[0]" -> "reset q[0]"
+	re := regexp.MustCompile(`^reset\s*(.+)$`)
+	if re.MatchString(text) {
+		matches := re.FindStringSubmatch(text)
+		if len(matches) > 1 {
+			operand := strings.TrimSpace(matches[1])
+			return "reset " + operand
+		}
+	}
+	return text
 }
