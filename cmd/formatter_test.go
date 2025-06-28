@@ -66,6 +66,16 @@ func TestFormatQASM(t *testing.T) {
 			input:    "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasureq->c;",
 			expected: "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasure q -> c;\n",
 		},
+		{
+			name:     "empty input",
+			input:    "",
+			expected: "",
+		},
+		{
+			name:     "whitespace only input",
+			input:    "   \n\t  ",
+			expected: "   \n\t  ",
+		},
 	}
 
 	for _, tt := range tests {

@@ -40,7 +40,11 @@ func FormatQASM(content string) (string, error) {
 	}
 
 	formatter := NewFormatter()
-	return formatter.Format(content)
+	formatted, err := formatter.Format(content)
+	if err != nil {
+		return "", err
+	}
+	return formatted, nil
 }
 
 // FormatQASMWithConfig formats OpenQASM 3 code with custom configuration

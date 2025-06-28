@@ -16,6 +16,10 @@ Type "qasmfmt testdata/test_unformatted.qasm"
 Enter
 Sleep 3s
 
+Type "echo 'OPENQASM 3.0;qubit[2]q;hq[0];' | qasmfmt format"
+Enter
+Sleep 3s
+
 Type "qasmfmt -w testdata/test_unformatted.qasm"
 Enter
 Sleep 3s
