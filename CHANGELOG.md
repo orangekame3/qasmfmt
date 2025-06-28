@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.0.6](https://github.com/orangekame3/qasmfmt/compare/v0.0.5...v0.0.6) - 2025-06-28
+- Update demo GIF to reflect recent changes by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/22
+- Update license from MIT to Apache 2.0 by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/24
+
 ## [v0.0.5](https://github.com/orangekame3/qasmfmt/compare/v0.0.4...v0.0.5) - 2025-06-28
 - Enhance README.md with clarification on formatting multiple files by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/18
 - Enhance formatting command for stdin support and error handling by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/20
