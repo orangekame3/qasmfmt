@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.8](https://github.com/orangekame3/qasmfmt/compare/v0.0.7...v0.0.8) - 2025-06-28
+- Add logo to qasmfmt documentation by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/27
+
 ## [v0.0.7](https://github.com/orangekame3/qasmfmt/compare/v0.0.6...v0.0.7) - 2025-06-28
 - Add CI/CD integration and update license by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/25
 
