@@ -62,37 +62,47 @@ func TestFormatQASM(t *testing.T) {
 			expected: "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasure q -> c;\n",
 		},
 		{
-			name:     "malformed measurement",
-			input:    "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasureq->c;",
-			expected: "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasure q -> c;\n",
-		},
-	}
+            name:     "malformed measurement",
+            input:    "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasureq->c;",
+            expected: "OPENQASM 3.0;\nqubit q;\nbit c;\nmeasure q -> c;\n",
+        },
+        {
+            name:     "empty input",
+            input:    "",
+            expected: "",
+        },
+        {
+            name:     "whitespace only input",
+            input:    "   \n\t  ",
+            expected: "   \n\t  ",
+        },
+    }
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			result, err := FormatQASM(tt.input)
-			if err != nil {
-				t.Fatalf("FormatQASM() error = %v", err)
-			}
-			if result != tt.expected {
-				t.Errorf("FormatQASM() = %q, want %q", result, tt.expected)
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            result, err := FormatQASM(tt.input)
+            if err != nil {
+                t.Fatalf("FormatQASM() error = %v", err)
+            }
+            if result != tt.expected {
+                t.Errorf("FormatQASM() = %q, want %q", result, tt.expected)
 
-				// Show detailed diff
-				resultLines := strings.Split(result, "\n")
-				expectedLines := strings.Split(tt.expected, "\n")
+                // Show detailed diff
+                resultLines := strings.Split(result, "\n")
+                expectedLines := strings.Split(tt.expected, "\n")
 
-				t.Logf("Result lines: %d", len(resultLines))
-				for i, line := range resultLines {
-					t.Logf("  [%d]: %q", i, line)
-				}
+                t.Logf("Result lines: %d", len(resultLines))
+                for i, line := range resultLines {
+                    t.Logf("  [%d]: %q", i, line)
+                }
 
-				t.Logf("Expected lines: %d", len(expectedLines))
-				for i, line := range expectedLines {
-					t.Logf("  [%d]: %q", i, line)
-				}
-			}
-		})
-	}
+                t.Logf("Expected lines: %d", len(expectedLines))
+                for i, line := range expectedLines {
+                    t.Logf("  [%d]: %q", i, line)
+                }
+            }
+        })
+    }
 }
 
 func TestValidateQASM(t *testing.T) {

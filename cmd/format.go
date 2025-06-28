@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -18,8 +19,8 @@ func NewFormatCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "format [file...]",
 		Short: "Format OpenQASM 3 files",
-		Long:  "Format OpenQASM 3 files with proper indentation and style",
-		Args:  cobra.MinimumNArgs(1),
+		Long:  `Format OpenQASM 3 files with proper indentation and style`,
+		Args:  cobra.ArbitraryArgs,
 		RunE:  runFormat,
 	}
 
@@ -31,6 +32,21 @@ func NewFormatCmd() *cobra.Command {
 }
 
 func runFormat(cmd *cobra.Command, args []string) error {
+	if len(args) == 0 {
+		// Read from stdin
+		input, err := io.ReadAll(cmd.InOrStdin())
+		if err != nil {
+			return fmt.Errorf("failed to read from stdin: %w", err)
+		}
+		formatted, err := FormatQASM(string(input))
+		if err != nil {
+			fmt.Fprintf(cmd.ErrOrStderr(), "Error formatting from stdin: %v\n", err)
+			return fmt.Errorf("failed to format QASM from stdin: %w", err)
+		}
+		fmt.Fprint(cmd.OutOrStdout(), formatted)
+		return nil
+	}
+
 	var processedFiles int
 	var modifiedFiles int
 
