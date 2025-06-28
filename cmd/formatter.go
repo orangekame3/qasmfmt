@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	antlr "github.com/antlr4-go/antlr/v4"
-	"github.com/itsubaki/qasm/gen/parser"
+	"github.com/orangekame3/qasmfmt/gen/parser"
 )
 
 type Formatter struct {
