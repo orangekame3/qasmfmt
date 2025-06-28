@@ -38,7 +38,7 @@ jobs:
           go install golang.org/x/tools/cmd/goimports@latest
           if [ "$(goimports -l . | wc -l)" -gt 0 ]; then
             echo "Go imports are not properly formatted:"
-            goimports -l .
+            find . -name '*.go' | grep -v '/gen/' | xargs goimports -l
             echo "Run 'goimports -w .' to fix import issues."
             exit 1
           fi
