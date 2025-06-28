@@ -9,11 +9,10 @@
 ### Core Components
 
 #### 1. Parser Integration
-- **Library**: `github.com/itsubaki/qasm`
 - **Parser**: ANTLR4-generated OpenQASM 3.0 parser
 - **Location**: `cmd/formatter.go`
 
-The formatter uses the ANTLR-generated parser from the `itsubaki/qasm` library to create an Abstract Syntax Tree (AST) of the input QASM code.
+The formatter uses the ANTLR-generated parser from the `openqasm/openqasm` to create an Abstract Syntax Tree (AST) of the input QASM code.
 
 #### 2. Formatter Implementation
 - **Main Type**: `Formatter` struct
@@ -139,7 +138,6 @@ qasmfmt check example.qasm
 ## Dependencies
 
 ### Runtime Dependencies
-- `github.com/itsubaki/qasm@v0.1.1` - OpenQASM 3.0 parser with ANTLR4 support
 - `github.com/antlr4-go/antlr/v4@v4.13.1` - ANTLR runtime for Go
 - `github.com/spf13/cobra@v1.9.1` - CLI framework
 - `github.com/charmbracelet/fang@v0.2.0` - Enhanced CLI experience

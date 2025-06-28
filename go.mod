@@ -5,7 +5,6 @@ go 1.24.4
 require (
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/charmbracelet/fang v0.2.0
-	github.com/itsubaki/qasm v0.1.1
 	github.com/spf13/cobra v1.9.1
 )
 
