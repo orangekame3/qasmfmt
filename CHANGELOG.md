@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.0.4](https://github.com/orangekame3/qasmfmt/compare/v0.0.3...v0.0.4) - 2025-06-28
+- Update versioning and build information by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/10
+- Remove unnecessary whitespace in Taskfile.yaml and main.go by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/12
+- Feature/remove unnecessary dependencies by @itsubaki in https://github.com/orangekame3/qasmfmt/pull/13
+- Enhance functionality and performance of qasmfmt by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/14
+- Clean up format workflow and remove unused files by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/15
+- Update demo tasks to use test data files by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/16
+- Improve formatting and structure of PARSER_ISSUES.md for clarity by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/17
+
 ## [v0.0.3](https://github.com/orangekame3/qasmfmt/compare/v0.0.2...v0.0.3) - 2025-06-28
 - Update GITHUB_TOKEN in release workflow by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/8
 
