@@ -564,7 +564,7 @@ func (f *Formatter) formatProgramWithComments(program *parser.ProgramContext, co
 	}
 
 	currentLine := 2 // Start from line 2 after version
-	
+
 	for _, stmtOrScope := range program.AllStatementOrScope() {
 		if stmtOrScope == nil {
 			continue
@@ -620,12 +620,12 @@ func (f *Formatter) formatProgramWithComments(program *parser.ProgramContext, co
 func (f *Formatter) formatBarrier(ctx parser.IBarrierStatementContext, indent int) string {
 	text := ctx.GetText()
 	text = strings.TrimSuffix(text, ";")
-	
+
 	// Handle "barrier" or "barrier q" or "barrier q[0], q[1]"
 	if strings.TrimSpace(text) == "barrier" {
 		return f.indent(indent) + "barrier;"
 	}
-	
+
 	// Format with operands
 	formatted := f.formatBarrierText(text)
 	return f.indent(indent) + formatted + ";"
