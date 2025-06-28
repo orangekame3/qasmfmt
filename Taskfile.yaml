@@ -179,25 +179,25 @@ tasks:
     deps: [build]
     cmds:
       - echo "=== Original file ==="
-      - cat example.qasm
+      - cat testdata/test_unformatted.qasm
       - echo -e "\n=== Formatted output ==="
-      - ./{{.BUILD_DIR}}/{{.BINARY_NAME}} format example.qasm
+      - ./{{.BUILD_DIR}}/{{.BINARY_NAME}} format testdata/test_unformatted.qasm
 
   demo:diff:
     desc: Show diff of formatting changes
     deps: [build]
     cmds:
-      - ./{{.BUILD_DIR}}/{{.BINARY_NAME}} format -d example.qasm
+      - ./{{.BUILD_DIR}}/{{.BINARY_NAME}} format -d testdata/test_unformatted.qasm
 
   demo:write:
     desc: Format example file in place
     deps: [build]
     cmds:
-      - cp example.qasm example.qasm.bak
-      - ./{{.BUILD_DIR}}/{{.BINARY_NAME}} format -w example.qasm
+      - cp testdata/test_unformatted.qasm testdata/test_unformatted.qasm.bak
+      - ./{{.BUILD_DIR}}/{{.BINARY_NAME}} format -w testdata/test_unformatted.qasm
       - echo "=== Changes applied ==="
-      - diff example.qasm.bak example.qasm || true
-      - mv example.qasm.bak example.qasm
+      - diff testdata/test_unformatted.qasm.bak testdata/test_unformatted.qasm || true
+      - mv testdata/test_unformatted.qasm.bak testdata/test_unformatted.qasm
 
   example:create:
     desc: Create more example QASM files for testing
