@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.7](https://github.com/orangekame3/qasmfmt/compare/v0.0.6...v0.0.7) - 2025-06-28
+- Add CI/CD integration and update license by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/25
+
 ## [v0.0.6](https://github.com/orangekame3/qasmfmt/compare/v0.0.5...v0.0.6) - 2025-06-28
 - Update demo GIF to reflect recent changes by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/22
 - Update license from MIT to Apache 2.0 by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/24
