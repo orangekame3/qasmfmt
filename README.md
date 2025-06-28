@@ -191,4 +191,3 @@ Contributions are welcome! Please see [DEVELOPMENT.md](DEVELOPMENT.md) for devel
 ## Related Projects
 
 - [OpenQASM](https://github.com/openqasm/openqasm) - OpenQASM specification
-- [qasm-parser](https://github.com/itsubaki/qasm) - Go parser for OpenQASM

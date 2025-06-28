@@ -1,11 +1,6 @@
 # Parser Issues and Limitations
 
-This document records the issues and limitations encountered when using the `github.com/itsubaki/qasm` parser library for OpenQASM 3.0 formatting.
-
 ## Library Information
-
-- **Library**: `github.com/itsubaki/qasm`
-- **Version**: `v0.1.1`
 - **Parser Type**: ANTLR4-generated OpenQASM 3.0 parser
 - **Go Module**: Uses `github.com/antlr4-go/antlr/v4@v4.13.1`
 
@@ -247,4 +242,3 @@ When contributing to this project, please:
 ---
 
 *Last Updated: 2025-06-28*
-*Parser Library Version: itsubaki/qasm v0.1.1*
