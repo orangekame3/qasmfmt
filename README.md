@@ -71,7 +71,8 @@ qasmfmt --newline=false example.qasm
 qasmfmt -v -w example.qasm
 
 # Format multiple files
-qasmfmt -w *.qasm
+# Similar to `go fmt`, `qasmfmt` can process multiple files or directories.
+qasmfmt -w *.qasm # or qasmfmt -w . or qasmfmt -w ./... to format all .qasm files in the current directory and its subdirectories.
 ```
 
 ### Subcommands (Alternative Syntax)
@@ -89,7 +90,6 @@ qasmfmt completion bash > /usr/local/etc/bash_completion.d/qasmfmt
 # Show version
 qasmfmt version
 ```
-
 
 ## Example
 
