@@ -9,7 +9,7 @@ on:
 jobs:
   format-check:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,8 +21,6 @@ jobs:
 
       - name: Check EditorConfig compliance
         uses: editorconfig-checker/action-editorconfig-checker@v2
-        with:
-          config: .editorconfig
 
       - name: Check Go formatting
         run: |
@@ -33,12 +31,12 @@ jobs:
             exit 1
           fi
 
-      - name: Check Go imports
+      - name: Check goimports formatting
         run: |
           go install golang.org/x/tools/cmd/goimports@latest
           if [ "$(goimports -l . | wc -l)" -gt 0 ]; then
             echo "Go imports are not properly formatted:"
-            find . -name '*.go' | grep -v '/gen/' | xargs goimports -l
+            goimports -l .
             echo "Run 'goimports -w .' to fix import issues."
             exit 1
           fi
