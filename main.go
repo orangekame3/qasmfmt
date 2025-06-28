@@ -9,11 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	version   = "dev"
-	commit    = "unknown"
-	buildDate = "unknown"
-)
 
 func main() {
 	rootCmd := &cobra.Command{
@@ -30,10 +25,11 @@ Examples:
   qasmfmt -c example.qasm            # Check if file is formatted
   qasmfmt -i 4 example.qasm          # Use 4 spaces for indentation
   qasmfmt *.qasm                     # Format multiple files`,
-		Version: getVersionInfo(),
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    cmd.RunRootFormat,
 	}
+
+	
 
 	// Global flags
 	rootCmd.PersistentFlags().BoolP("write", "w", false, "write result to (source) file instead of stdout")
@@ -54,13 +50,3 @@ Examples:
 	}
 }
 
-func getVersionInfo() string {
-	info := version
-	if commit != "unknown" {
-		info += " (" + commit + ")"
-	}
-	if buildDate != "unknown" {
-		info += " built on " + buildDate
-	}
-	return info
-}
