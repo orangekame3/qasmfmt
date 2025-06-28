@@ -30,15 +30,6 @@ linters-settings:
     check-type-assertions: true
     check-blank: true
 
-  revive:
-    min-confidence: 0
-    rules:
-      - name: exported
-        severity: warning
-        disabled: false
-        arguments:
-          - "checkPrivateReceivers"
-          - "sayRepetitiveInsteadOfStutters"
 
   gosec:
     severity: "low"
