@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.0.9](https://github.com/orangekame3/qasmfmt/compare/v0.0.8...v0.0.9) - 2025-06-28
+- Fix code block syntax in README.md by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/29
+- Add support for barrier and reset statements in formatter by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/31
+
 ## [v0.0.8](https://github.com/orangekame3/qasmfmt/compare/v0.0.7...v0.0.8) - 2025-06-28
 - Add logo to qasmfmt documentation by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/27
 
