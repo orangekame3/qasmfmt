@@ -24,7 +24,7 @@ tasks:
     desc: Build the application
     cmds:
       - mkdir -p {{.BUILD_DIR}}
-      - go build -ldflags "-X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.buildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}} .
+      - go build -ldflags "-X github.com/orangekame3/qasmfmt/cmd.Version={{.VERSION}} -X github.com/orangekame3/qasmfmt/cmd.Commit={{.COMMIT}} -X github.com/orangekame3/qasmfmt/cmd.BuildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}} .
     sources:
       - "**/*.go"
       - go.mod
@@ -46,7 +46,7 @@ tasks:
       GOOS: linux
       GOARCH: amd64
     cmds:
-      - go build -ldflags "-X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.buildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-linux-amd64 .
+      - go build -ldflags "-X github.com/orangekame3/qasmfmt/cmd.Version={{.VERSION}} -X github.com/orangekame3/qasmfmt/cmd.Commit={{.COMMIT}} -X github.com/orangekame3/qasmfmt/cmd.BuildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-linux-amd64 .
 
   build:darwin:
     desc: Build for macOS (amd64 and arm64)
@@ -59,14 +59,14 @@ tasks:
       GOOS: darwin
       GOARCH: amd64
     cmds:
-      - go build -ldflags "-X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.buildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-darwin-amd64 .
+      - go build -ldflags "-X github.com/orangekame3/qasmfmt/cmd.Version={{.VERSION}} -X github.com/orangekame3/qasmfmt/cmd.Commit={{.COMMIT}} -X github.com/orangekame3/qasmfmt/cmd.BuildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-darwin-amd64 .
 
   build:darwin:arm64:
     env:
       GOOS: darwin
       GOARCH: arm64
     cmds:
-      - go build -ldflags "-X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.buildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-darwin-arm64 .
+      - go build -ldflags "-X github.com/orangekame3/qasmfmt/cmd.Version={{.VERSION}} -X github.com/orangekame3/qasmfmt/cmd.Commit={{.COMMIT}} -X github.com/orangekame3/qasmfmt/cmd.BuildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-darwin-arm64 .
 
   build:windows:
     desc: Build for Windows (amd64)
@@ -74,7 +74,7 @@ tasks:
       GOOS: windows
       GOARCH: amd64
     cmds:
-      - go build -ldflags "-X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.buildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-windows-amd64.exe .
+      - go build -ldflags "-X github.com/orangekame3/qasmfmt/cmd.Version={{.VERSION}} -X github.com/orangekame3/qasmfmt/cmd.Commit={{.COMMIT}} -X github.com/orangekame3/qasmfmt/cmd.BuildDate={{.BUILD_DATE}}" -o {{.BUILD_DIR}}/{{.BINARY_NAME}}-windows-amd64.exe .
 
   # Development tasks
   dev:
@@ -86,7 +86,7 @@ tasks:
   install:
     desc: Install the binary to $GOPATH/bin
     cmds:
-      - go install -ldflags "-X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.buildDate={{.BUILD_DATE}}" .
+      - go install -ldflags "-X github.com/orangekame3/qasmfmt/cmd.Version={{.VERSION}} -X github.com/orangekame3/qasmfmt/cmd.Commit={{.COMMIT}} -X github.com/orangekame3/qasmfmt/cmd.BuildDate={{.BUILD_DATE}}" .
 
   # Testing tasks
   test:

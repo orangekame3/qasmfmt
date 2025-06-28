@@ -12,6 +12,12 @@ A command-line formatter for OpenQASM 3.0 quantum circuit files written in Go.
 
 ## Installation
 
+### Using Homebrew (for macOS and Linux)
+
+```bash
+brew install orangekame3/tap/qasmfmt
+```
+
 ### From Source
 
 ```bash
