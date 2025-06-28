@@ -1,4 +1,4 @@
-name: LLM Code Review
+name: Auto Request Copilot Review
 
 on:
   pull_request:
@@ -10,32 +10,30 @@ permissions:
   pull-requests: write
 
 jobs:
-  llm-code-review:
+  request-copilot-review:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Request GitHub Copilot Review
+        uses: actions/github-script@v7
         with:
-          fetch-depth: 0
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v44
-        with:
-          files: |
-            **/*.go
-            **/*.md
-            **/*.yml
-            **/*.yaml
-            **/*.json
-
-      - name: AI Code Review with GitHub Models
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: freeedcom/ai-codereviewer@main
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_MODEL: "gpt-4"
-          exclude: "**/*.sum,**/*.mod,**/vendor/**"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // GitHub CopilotにPRレビューをリクエスト
+            const { owner, repo, number } = context.issue;
+            
+            try {
+              // Copilotをレビュアーとして追加
+              await github.rest.pulls.requestReviewers({
+                owner: owner,
+                repo: repo,
+                pull_number: number,
+                reviewers: ['copilot[bot]']
+              });
+              
+              console.log('GitHub Copilotにレビューをリクエストしました');
+            } catch (error) {
+              console.log('Copilotレビューのリクエストに失敗:', error.message);
+              // エラーが発生してもワークフローは続行
+            }
