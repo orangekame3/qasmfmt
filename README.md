@@ -1,13 +1,13 @@
 # qasmfmt
 
-```
+```text
      ██████╗  █████╗ ███████╗███╗   ███╗███████╗███╗   ███╗████████╗
     ██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔════╝████╗ ████║╚══██╔══╝
-    ██║   ██║███████║███████╗██╔████╔██║█████╗  ██╔████╔██║   ██║   
-    ██║▄▄ ██║██╔══██║╚════██║██║╚██╔╝██║██╔══╝  ██║╚██╔╝██║   ██║   
-    ╚██████╔╝██║  ██║███████║██║ ╚═╝ ██║██║     ██║ ╚═╝ ██║   ██║   
-     ╚══▀▀═╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝     ╚═╝     ╚═╝   ╚═╝   
-                                                                      
+    ██║   ██║███████║███████╗██╔████╔██║█████╗  ██╔████╔██║   ██║
+    ██║▄▄ ██║██╔══██║╚════██║██║╚██╔╝██║██╔══╝  ██║╚██╔╝██║   ██║
+    ╚██████╔╝██║  ██║███████║██║ ╚═╝ ██║██║     ██║ ╚═╝ ██║   ██║
+     ╚══▀▀═╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝     ╚═╝     ╚═╝   ╚═╝
+
          🌀 OpenQASM 3.0 Code Formatter 🌀
 ```
 
@@ -133,12 +133,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install qasmfmt
         run: |
           curl -L https://github.com/orangekame3/qasmfmt/releases/latest/download/qasmfmt_Linux_x86_64.tar.gz | tar -xz
           sudo mv qasmfmt /usr/local/bin/
-      
+
       - name: Check QASM formatting
         run: qasmfmt -c *.qasm
 ```
@@ -155,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Check QASM formatting
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace \
