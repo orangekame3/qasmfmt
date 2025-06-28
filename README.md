@@ -2,6 +2,8 @@
 
 A command-line formatter for OpenQASM 3.0 quantum circuit files written in Go.
 
+![qasmfmt demo](./img/demo.gif)
+
 ## Features
 
 - **Format OpenQASM 3.0 files** with proper indentation and spacing
@@ -87,6 +89,7 @@ qasmfmt completion bash > /usr/local/etc/bash_completion.d/qasmfmt
 # Show version
 qasmfmt version
 ```
+
 
 ## Example
 
