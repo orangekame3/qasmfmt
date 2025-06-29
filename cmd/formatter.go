@@ -78,7 +78,7 @@ func (f *Formatter) Format(content string) (string, error) {
 	if result.Program.Version != nil {
 		expectedStatements = strings.Count(preprocessed, ";") - 1
 	}
-	
+
 	if len(result.Program.Statements) < expectedStatements && expectedStatements > 0 {
 		// Fallback to text-based formatting if parser is incomplete
 		return f.formatWithTextBasedFallback(preprocessed), nil
@@ -114,7 +114,7 @@ func (f *Formatter) formatProgram(program *parser.Program) string {
 	}
 
 	result := strings.Join(lines, "\n")
-	
+
 	// Only add newline if there's actual content
 	if f.newline && len(lines) > 0 && !strings.HasSuffix(result, "\n") {
 		result += "\n"
@@ -147,37 +147,37 @@ func (f *Formatter) formatStatement(stmt parser.Statement, indent int) string {
 
 func (f *Formatter) formatQuantumDeclaration(stmt *parser.QuantumDeclaration, indent int) string {
 	result := f.indent(indent) + stmt.Type
-	
+
 	if stmt.Size != nil {
 		sizeStr := f.formatExpression(stmt.Size)
 		result += "[" + sizeStr + "]"
 	}
-	
+
 	result += " " + stmt.Identifier + ";"
 	return result
 }
 
 func (f *Formatter) formatClassicalDeclaration(stmt *parser.ClassicalDeclaration, indent int) string {
 	result := f.indent(indent) + stmt.Type
-	
+
 	if stmt.Size != nil {
 		sizeStr := f.formatExpression(stmt.Size)
 		result += "[" + sizeStr + "]"
 	}
-	
+
 	result += " " + stmt.Identifier
-	
+
 	if stmt.Initializer != nil {
 		result += " = " + f.formatExpression(stmt.Initializer)
 	}
-	
+
 	result += ";"
 	return result
 }
 
 func (f *Formatter) formatGateCall(stmt *parser.GateCall, indent int) string {
 	result := f.indent(indent) + stmt.Name
-	
+
 	// Add parameters if present
 	if len(stmt.Parameters) > 0 {
 		params := make([]string, len(stmt.Parameters))
@@ -186,7 +186,7 @@ func (f *Formatter) formatGateCall(stmt *parser.GateCall, indent int) string {
 		}
 		result += "(" + strings.Join(params, ", ") + ")"
 	}
-	
+
 	// Add qubits
 	if len(stmt.Qubits) > 0 {
 		qubits := make([]string, len(stmt.Qubits))
@@ -195,18 +195,18 @@ func (f *Formatter) formatGateCall(stmt *parser.GateCall, indent int) string {
 		}
 		result += " " + strings.Join(qubits, ", ")
 	}
-	
+
 	result += ";"
 	return result
 }
 
 func (f *Formatter) formatMeasurement(stmt *parser.Measurement, indent int) string {
 	result := f.indent(indent) + "measure " + f.formatExpression(stmt.Qubit)
-	
+
 	if stmt.Target != nil {
 		result += " -> " + f.formatExpression(stmt.Target)
 	}
-	
+
 	result += ";"
 	return result
 }
@@ -217,7 +217,7 @@ func (f *Formatter) formatInclude(stmt *parser.Include, indent int) string {
 
 func (f *Formatter) formatGateDefinition(stmt *parser.GateDefinition, indent int) string {
 	result := f.indent(indent) + "gate " + stmt.Name
-	
+
 	// Add parameters if present
 	if len(stmt.Parameters) > 0 {
 		params := make([]string, len(stmt.Parameters))
@@ -226,7 +226,7 @@ func (f *Formatter) formatGateDefinition(stmt *parser.GateDefinition, indent int
 		}
 		result += "(" + strings.Join(params, ", ") + ")"
 	}
-	
+
 	// Add qubits
 	if len(stmt.Qubits) > 0 {
 		qubits := make([]string, len(stmt.Qubits))
@@ -235,28 +235,28 @@ func (f *Formatter) formatGateDefinition(stmt *parser.GateDefinition, indent int
 		}
 		result += " " + strings.Join(qubits, ", ")
 	}
-	
+
 	result += " {\n"
-	
+
 	// Format body
 	for _, bodyStmt := range stmt.Body {
 		result += f.formatStatement(bodyStmt, indent+1) + "\n"
 	}
-	
+
 	result += f.indent(indent) + "}"
 	return result
 }
 
 func (f *Formatter) formatIfStatement(stmt *parser.IfStatement, indent int) string {
 	result := f.indent(indent) + "if (" + f.formatExpression(stmt.Condition) + ") {\n"
-	
+
 	// Format then body
 	for _, thenStmt := range stmt.ThenBody {
 		result += f.formatStatement(thenStmt, indent+1) + "\n"
 	}
-	
+
 	result += f.indent(indent) + "}"
-	
+
 	// Format else body if present
 	if len(stmt.ElseBody) > 0 {
 		result += " else {\n"
@@ -265,7 +265,7 @@ func (f *Formatter) formatIfStatement(stmt *parser.IfStatement, indent int) stri
 		}
 		result += f.indent(indent) + "}"
 	}
-	
+
 	return result
 }
 
@@ -307,7 +307,7 @@ func (f *Formatter) getStatementTypeFromStmt(stmt parser.Statement) string {
 	case *parser.QuantumDeclaration:
 		return "quantum_declaration"
 	case *parser.ClassicalDeclaration:
-		return "classical_declaration" 
+		return "classical_declaration"
 	case *parser.GateCall:
 		return "gate_call"
 	case *parser.Measurement:
@@ -546,19 +546,19 @@ func (f *Formatter) formatWithTextBasedFallback(content string) string {
 		}
 
 		currentType := f.getStatementTypeFromText(line)
-		
+
 		// Add empty line between different types of statements
 		if f.shouldAddEmptyLine(lastStatementType, currentType) {
 			formattedLines = append(formattedLines, "")
 		}
 
 		formatted := f.formatStatementText(line)
-		
+
 		// Only add semicolon to valid-looking statements
 		if !strings.HasSuffix(formatted, ";") && formatted != "" && !strings.HasPrefix(formatted, "//") && f.looksLikeQASMStatement(formatted) {
 			formatted += ";"
 		}
-		
+
 		if formatted != "" {
 			formattedLines = append(formattedLines, formatted)
 			lastStatementType = currentType
@@ -566,7 +566,7 @@ func (f *Formatter) formatWithTextBasedFallback(content string) string {
 	}
 
 	result := strings.Join(formattedLines, "\n")
-	
+
 	// Only add newline if there's actual content
 	if f.newline && len(formattedLines) > 0 && !strings.HasSuffix(result, "\n") {
 		result += "\n"
@@ -582,7 +582,7 @@ func (f *Formatter) looksLikeQASMStatement(text string) bool {
 
 func (f *Formatter) getStatementTypeFromText(text string) string {
 	text = strings.TrimSpace(text)
-	
+
 	if strings.HasPrefix(text, "OPENQASM") {
 		return "version"
 	}
@@ -604,12 +604,12 @@ func (f *Formatter) getStatementTypeFromText(text string) string {
 	if strings.HasPrefix(text, "if") {
 		return "if_statement"
 	}
-	
+
 	// Check if it's a gate call (not starting with known keywords)
 	if regexp.MustCompile(`^[a-zA-Z_][a-zA-Z0-9_]*(\(.*?\))?\s+[a-zA-Z_]`).MatchString(text) {
 		return "gate_call"
 	}
-	
+
 	return "other"
 }
 
