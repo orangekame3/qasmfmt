@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.11](https://github.com/orangekame3/qasmfmt/compare/v0.0.10...v0.0.11) - 2025-06-29
+- Remove generated parser files and update dependencies by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/34
+
 ## [v0.0.10](https://github.com/orangekame3/qasmfmt/compare/v0.0.9...v0.0.10) - 2025-06-29
 - Refactor QASM lexer comment handling and add tests by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/32
 
