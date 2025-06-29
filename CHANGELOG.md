@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.10](https://github.com/orangekame3/qasmfmt/compare/v0.0.9...v0.0.10) - 2025-06-29
+- Refactor QASM lexer comment handling and add tests by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/32
+
 ## [v0.0.9](https://github.com/orangekame3/qasmfmt/compare/v0.0.8...v0.0.9) - 2025-06-28
 - Fix code block syntax in README.md by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/29
 - Add support for barrier and reset statements in formatter by @orangekame3 in https://github.com/orangekame3/qasmfmt/pull/31
