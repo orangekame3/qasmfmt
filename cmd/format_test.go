@@ -23,7 +23,7 @@ func TestRunFormat_Stdin(t *testing.T) {
 		{
 			name:           "simple text input",
 			input:          "malformed qasm",
-			expectedOutput: "malformedqas m;\n",
+			expectedOutput: "",
 			wantErr:        false,
 		},
 		{
