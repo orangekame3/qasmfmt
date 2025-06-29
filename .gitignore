@@ -44,3 +44,4 @@ Thumbs.db
 debug_*.qasm
 temp_*.qasm
 .task/*
+.antlr/*
