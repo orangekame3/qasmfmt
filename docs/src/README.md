@@ -28,11 +28,13 @@ qasmfmt --check input.qasm
 ## Example
 
 Before:
+
 ```qasm
 OPENQASM 3.0;include"stdgates.qasm";qubit[2]q;bit[2]c;hq[0];cxq[0],q[1];c=measure q;
 ```
 
 After:
+
 ```qasm
 OPENQASM 3.0;
 include "stdgates.qasm";
