@@ -1,0 +1,12 @@
+[book]
+title = "qasmfmt"
+authors = ["orangekame3"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+git-repository-url = "https://github.com/orangekame3/qasmfmt"
+edit-url-template = "https://github.com/orangekame3/qasmfmt/edit/main/docs/{path}"
