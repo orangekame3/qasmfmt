@@ -1,0 +1,28 @@
+{
+  "name": "qasmfmt",
+  "version": "0.0.1",
+  "description": "OpenQASM 3.0 formatter",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orangekame3/qasmfmt.git"
+  },
+  "keywords": [
+    "openqasm",
+    "qasm",
+    "quantum",
+    "formatter",
+    "quantum-computing"
+  ],
+  "author": "orangekame3",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/orangekame3/qasmfmt/issues"
+  },
+  "homepage": "https://github.com/orangekame3/qasmfmt#readme",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ]
+}
