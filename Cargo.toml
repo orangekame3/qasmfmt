@@ -2,6 +2,11 @@
 name = "qasmfmt"
 version = "0.1.0"
 edition = "2024"
+description = "OpenQASM 3.0 formatter"
+license = "MIT"
+repository = "https://github.com/orangekame3/qasmfmt"
+keywords = ["openqasm", "quantum", "formatter"]
+categories = ["development-tools", "command-line-utilities"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
