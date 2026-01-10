@@ -1,0 +1,26 @@
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - cargo build
+
+  run:
+    cmds:
+      - cargo run
+
+  test:
+    cmds:
+      - cargo test
+
+  fmt:
+    cmds:
+      - cargo fmt
+
+  clippy:
+    cmds:
+      - cargo clippy -- -D warnings
+
+  clean:
+    cmds:
+      - cargo clean
