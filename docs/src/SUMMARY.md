@@ -12,6 +12,7 @@
 # Formatting Rules
 
 - [Overview](./rules/overview.md)
+- [Style Analysis](./rules/style-analysis.md)
 
 # Development
 
