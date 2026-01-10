@@ -5,7 +5,6 @@
 ## Features
 
 - Automatic formatting of OpenQASM 3.0 code
-- Configurable indentation and line width
 - Comment preservation
 - CLI and library interfaces
 
@@ -15,11 +14,8 @@
 # Install
 cargo install qasmfmt
 
-# Format a file
+# Format a file (in-place)
 qasmfmt input.qasm
-
-# Format in place
-qasmfmt -w input.qasm
 
 # Check formatting
 qasmfmt --check input.qasm
@@ -30,14 +26,14 @@ qasmfmt --check input.qasm
 Before:
 
 ```qasm
-OPENQASM 3.0;include"stdgates.qasm";qubit[2]q;bit[2]c;hq[0];cxq[0],q[1];c=measure q;
+OPENQASM 3.0;include"stdgates.inc";qubit[2]q;bit[2]c;h q[0];cx q[0],q[1];c=measure q;
 ```
 
 After:
 
 ```qasm
 OPENQASM 3.0;
-include "stdgates.qasm";
+include "stdgates.inc";
 
 qubit[2] q;
 bit[2] c;
@@ -45,10 +41,6 @@ h q[0];
 cx q[0], q[1];
 c = measure q;
 ```
-
-## Status
-
-This project is in early development (v0.0.1). The core formatter is being implemented.
 
 ## License
 

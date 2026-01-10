@@ -2,16 +2,16 @@
 
 ## Basic Usage
 
-Format a file and print to stdout:
+Format a file (in-place):
 
 ```bash
 qasmfmt input.qasm
 ```
 
-Format and overwrite the file:
+Format multiple files:
 
 ```bash
-qasmfmt -w input.qasm
+qasmfmt *.qasm
 ```
 
 Format from stdin:
@@ -33,13 +33,9 @@ Exit codes:
 - `1`: File needs formatting
 - `2`: Error (parse error, file not found, etc.)
 
-## Multiple Files
-
-```bash
-qasmfmt -w *.qasm
-```
-
 ## Show Diff
+
+Preview changes without modifying files:
 
 ```bash
 qasmfmt --diff input.qasm

@@ -10,34 +10,37 @@ qasmfmt [OPTIONS] [FILES...]
 
 | Option | Short | Description |
 |--------|-------|-------------|
-| `--write` | `-w` | Write formatted output back to source file |
-| `--check` | `-c` | Check if files are formatted (exit 1 if not) |
-| `--diff` | `-d` | Show unified diff |
-| `--indent <N>` | `-i` | Number of spaces per indentation level (default: 4) |
-| `--max-width <N>` | | Maximum line width (default: 100) |
+| `--check` | | Check if files are formatted (exit 1 if not) |
+| `--diff` | | Show diff instead of writing |
 | `--help` | `-h` | Print help |
 | `--version` | `-V` | Print version |
+
+## Behavior
+
+- **Default**: Format files in-place
+- **No files given**: Read from stdin, write to stdout
+- **With `--check`**: Exit with 1 if files would be reformatted
+- **With `--diff`**: Show diff, do not modify files
 
 ## Examples
 
 ```bash
-# Format to stdout
+# Format files in place
 qasmfmt input.qasm
+qasmfmt src/*.qasm
 
-# Format in place
-qasmfmt -w input.qasm
-
-# Check formatting (for CI)
-qasmfmt -c input.qasm
-
-# Custom indentation
-qasmfmt --indent 2 input.qasm
+# Check if formatted (for CI)
+qasmfmt --check input.qasm
 
 # Show diff
-qasmfmt -d input.qasm
+qasmfmt --diff input.qasm
 
-# Stdin
+# Format from stdin
+cat input.qasm | qasmfmt
 echo "OPENQASM 3.0;qubit q;" | qasmfmt
+
+# Format all QASM files recursively
+find . -name "*.qasm" | xargs qasmfmt
 ```
 
 ## Exit Codes
@@ -45,5 +48,5 @@ echo "OPENQASM 3.0;qubit q;" | qasmfmt
 | Code | Meaning |
 |------|---------|
 | 0 | Success |
-| 1 | File needs formatting (with `--check`) |
-| 2 | Error (parse error, IO error, etc.) |
+| 1 | Would reformat (with `--check`) |
+| 2 | Error (parse error, IO error) |
