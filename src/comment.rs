@@ -40,8 +40,8 @@ pub fn extract_comments(source: &str) -> CommentMap {
             continue;
         }
 
-        if c == '/' {
-            if let Some(&(_, next)) = chars.peek() {
+        if c == '/'
+            && let Some(&(_, next)) = chars.peek() {
                 if next == '/' {
                     chars.next();
                     let start = i;
@@ -72,13 +72,12 @@ pub fn extract_comments(source: &str) -> CommentMap {
                             line += 1;
                             line_start = j + 1;
                         }
-                        if ch == '*' {
-                            if let Some(&(_, '/')) = chars.peek() {
+                        if ch == '*'
+                            && let Some(&(_, '/')) = chars.peek() {
                                 chars.next();
                                 end = j + 2;
                                 break;
                             }
-                        }
                         end = j + ch.len_utf8();
                     }
 
@@ -90,7 +89,6 @@ pub fn extract_comments(source: &str) -> CommentMap {
                     });
                 }
             }
-        }
     }
 
     comments

@@ -83,15 +83,14 @@ fn extract_version_number(v: &ast::VersionString) -> String {
     use oq3_syntax::SyntaxKind::VERSION_STRING;
 
     for token in v.syntax().children_with_tokens() {
-        if let Some(tok) = token.as_token() {
-            if tok.kind() == VERSION_STRING {
+        if let Some(tok) = token.as_token()
+            && tok.kind() == VERSION_STRING {
                 return tok
                     .text()
                     .strip_prefix("OPENQASM")
                     .map(|s| s.trim().to_string())
                     .unwrap_or_default();
             }
-        }
     }
     String::new()
 }
@@ -111,15 +110,13 @@ fn format_include(i: ast::Include) -> Doc {
 fn format_quantum_decl(q: ast::QuantumDeclarationStatement) -> Doc {
     let mut parts = vec![Doc::text("qubit")];
 
-    if let Some(qubit_type) = q.qubit_type() {
-        if let Some(designator) = qubit_type.designator() {
-            if let Some(expr) = designator.expr() {
+    if let Some(qubit_type) = q.qubit_type()
+        && let Some(designator) = qubit_type.designator()
+            && let Some(expr) = designator.expr() {
                 parts.push(Doc::text("["));
                 parts.push(format_expr(expr));
                 parts.push(Doc::text("]"));
             }
-        }
-    }
 
     parts.push(Doc::space());
     if let Some(name) = q.name() {
