@@ -84,13 +84,14 @@ fn extract_version_number(v: &ast::VersionString) -> String {
 
     for token in v.syntax().children_with_tokens() {
         if let Some(tok) = token.as_token()
-            && tok.kind() == VERSION_STRING {
-                return tok
-                    .text()
-                    .strip_prefix("OPENQASM")
-                    .map(|s| s.trim().to_string())
-                    .unwrap_or_default();
-            }
+            && tok.kind() == VERSION_STRING
+        {
+            return tok
+                .text()
+                .strip_prefix("OPENQASM")
+                .map(|s| s.trim().to_string())
+                .unwrap_or_default();
+        }
     }
     String::new()
 }
@@ -112,11 +113,12 @@ fn format_quantum_decl(q: ast::QuantumDeclarationStatement) -> Doc {
 
     if let Some(qubit_type) = q.qubit_type()
         && let Some(designator) = qubit_type.designator()
-            && let Some(expr) = designator.expr() {
-                parts.push(Doc::text("["));
-                parts.push(format_expr(expr));
-                parts.push(Doc::text("]"));
-            }
+        && let Some(expr) = designator.expr()
+    {
+        parts.push(Doc::text("["));
+        parts.push(format_expr(expr));
+        parts.push(Doc::text("]"));
+    }
 
     parts.push(Doc::space());
     if let Some(name) = q.name() {

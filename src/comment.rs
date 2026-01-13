@@ -41,54 +41,56 @@ pub fn extract_comments(source: &str) -> CommentMap {
         }
 
         if c == '/'
-            && let Some(&(_, next)) = chars.peek() {
-                if next == '/' {
-                    chars.next();
-                    let start = i;
-                    let mut end = i + 2;
+            && let Some(&(_, next)) = chars.peek()
+        {
+            if next == '/' {
+                chars.next();
+                let start = i;
+                let mut end = i + 2;
 
-                    while let Some(&(j, ch)) = chars.peek() {
-                        if ch == '\n' {
-                            break;
-                        }
-                        end = j + ch.len_utf8();
-                        chars.next();
+                while let Some(&(j, ch)) = chars.peek() {
+                    if ch == '\n' {
+                        break;
                     }
-
-                    comments.entry(line).or_default().push(Comment {
-                        style: CommentStyle::Line,
-                        content: source[start..end].to_string(),
-                        line,
-                        column: i - line_start,
-                    });
-                } else if next == '*' {
+                    end = j + ch.len_utf8();
                     chars.next();
-                    let start = i;
-                    let start_line = line;
-                    let mut end = i + 2;
-
-                    while let Some((j, ch)) = chars.next() {
-                        if ch == '\n' {
-                            line += 1;
-                            line_start = j + 1;
-                        }
-                        if ch == '*'
-                            && let Some(&(_, '/')) = chars.peek() {
-                                chars.next();
-                                end = j + 2;
-                                break;
-                            }
-                        end = j + ch.len_utf8();
-                    }
-
-                    comments.entry(start_line).or_default().push(Comment {
-                        style: CommentStyle::Block,
-                        content: source[start..end].to_string(),
-                        line: start_line,
-                        column: i - (if start_line == 0 { 0 } else { line_start }),
-                    });
                 }
+
+                comments.entry(line).or_default().push(Comment {
+                    style: CommentStyle::Line,
+                    content: source[start..end].to_string(),
+                    line,
+                    column: i - line_start,
+                });
+            } else if next == '*' {
+                chars.next();
+                let start = i;
+                let start_line = line;
+                let mut end = i + 2;
+
+                while let Some((j, ch)) = chars.next() {
+                    if ch == '\n' {
+                        line += 1;
+                        line_start = j + 1;
+                    }
+                    if ch == '*'
+                        && let Some(&(_, '/')) = chars.peek()
+                    {
+                        chars.next();
+                        end = j + 2;
+                        break;
+                    }
+                    end = j + ch.len_utf8();
+                }
+
+                comments.entry(start_line).or_default().push(Comment {
+                    style: CommentStyle::Block,
+                    content: source[start..end].to_string(),
+                    line: start_line,
+                    column: i - (if start_line == 0 { 0 } else { line_start }),
+                });
             }
+        }
     }
 
     comments
