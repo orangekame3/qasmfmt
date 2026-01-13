@@ -31,6 +31,10 @@ classifiers = [
 Homepage = "https://github.com/orangekame3/qasmfmt"
 Repository = "https://github.com/orangekame3/qasmfmt"
 
+[project.scripts]
+qasmfmt = "qasmfmt:main"
+
 [tool.maturin]
 features = ["python"]
-module-name = "qasmfmt"
+module-name = "qasmfmt._qasmfmt"
+python-source = "python"

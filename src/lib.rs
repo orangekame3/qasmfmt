@@ -36,10 +36,29 @@ mod python {
             .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))
     }
 
+    #[pyfunction]
+    #[pyo3(signature = (path, indent_size=4, max_width=100))]
+    fn format_file(path: &str, indent_size: usize, max_width: usize) -> PyResult<String> {
+        let source = std::fs::read_to_string(path)
+            .map_err(|e| PyErr::new::<pyo3::exceptions::PyIOError, _>(e.to_string()))?;
+        format_str(&source, indent_size, max_width)
+    }
+
+    #[pyfunction]
+    #[pyo3(signature = (path, indent_size=4, max_width=100))]
+    fn check_file(path: &str, indent_size: usize, max_width: usize) -> PyResult<bool> {
+        let source = std::fs::read_to_string(path)
+            .map_err(|e| PyErr::new::<pyo3::exceptions::PyIOError, _>(e.to_string()))?;
+        let formatted = format_str(&source, indent_size, max_width)?;
+        Ok(source == formatted)
+    }
+
     #[pymodule]
-    #[pyo3(name = "qasmfmt")]
+    #[pyo3(name = "_qasmfmt")]
     fn qasmfmt_python(m: &Bound<'_, PyModule>) -> PyResult<()> {
         m.add_function(wrap_pyfunction!(format_str, m)?)?;
+        m.add_function(wrap_pyfunction!(format_file, m)?)?;
+        m.add_function(wrap_pyfunction!(check_file, m)?)?;
         m.add("__version__", env!("CARGO_PKG_VERSION"))?;
         Ok(())
     }
