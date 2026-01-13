@@ -1,12 +1,15 @@
+//! Pretty Printer - converts Doc IR to string
+
 use crate::config::FormatConfig;
 use crate::ir::Doc;
 
-/// Pretty Printer
 pub struct Printer<'a> {
     config: &'a FormatConfig,
     output: String,
     current_line: String,
     indent: usize,
+    /// Indentation level recorded when first text is added to the line.
+    line_indent: Option<usize>,
 }
 
 impl<'a> Printer<'a> {
@@ -16,6 +19,7 @@ impl<'a> Printer<'a> {
             output: String::new(),
             current_line: String::new(),
             indent: 0,
+            line_indent: None,
         }
     }
 
@@ -41,6 +45,9 @@ impl<'a> Printer<'a> {
             Doc::Nil => {}
 
             Doc::Text(s) => {
+                if self.current_line.is_empty() && self.line_indent.is_none() {
+                    self.line_indent = Some(self.indent);
+                }
                 self.current_line.push_str(s);
             }
 
@@ -50,6 +57,9 @@ impl<'a> Printer<'a> {
 
             Doc::Softline => {
                 if flat {
+                    if self.current_line.is_empty() && self.line_indent.is_none() {
+                        self.line_indent = Some(self.indent);
+                    }
                     self.current_line.push(' ');
                 } else {
                     self.flush();
@@ -77,16 +87,19 @@ impl<'a> Printer<'a> {
 
     fn flush(&mut self) {
         if !self.current_line.is_empty() {
-            let indent_str = self.config.indent_str(self.indent);
+            let indent_level = self.line_indent.unwrap_or(self.indent);
+            let indent_str = self.config.indent_str(indent_level);
             self.output.push_str(&indent_str);
             self.output.push_str(&self.current_line);
             self.current_line.clear();
         }
         self.output.push('\n');
+        self.line_indent = None;
     }
 
     fn fits(&self, doc: &Doc) -> bool {
-        let current_width = self.indent * self.config.indent_size + self.current_line.len();
+        let indent_level = self.line_indent.unwrap_or(self.indent);
+        let current_width = indent_level * self.config.indent_size + self.current_line.len();
         let remaining = self.config.max_width.saturating_sub(current_width);
 
         self.measure(doc) <= remaining
