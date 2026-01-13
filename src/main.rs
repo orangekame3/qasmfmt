@@ -1,6 +1,6 @@
 use std::fs;
 use std::io::{self, Read};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
 use clap::Parser;
@@ -67,7 +67,7 @@ fn format_stdin(config: &FormatConfig) -> Result<()> {
 }
 
 fn format_file(
-    path: &PathBuf,
+    path: &Path,
     config: &FormatConfig,
     write: bool,
     check: bool,
@@ -96,7 +96,7 @@ fn format_file(
     Ok(())
 }
 
-fn print_diff(original: &str, formatted: &str, path: &PathBuf) {
+fn print_diff(original: &str, formatted: &str, path: &Path) {
     if original == formatted {
         return;
     }
