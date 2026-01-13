@@ -10,7 +10,7 @@ pub enum Doc {
 }
 
 impl Doc {
-    pub fn nil() -> Slef {
+    pub fn nil() -> Self {
         Doc::Nil
     }
 
@@ -33,7 +33,7 @@ impl Doc {
     pub fn concat(docs: Vec<Doc>) -> Self {
         let docs: Vec<_> = docs
             .into_iter()
-            .filter(|d| !matches!(d, Doc::Nill))
+            .filter(|d| !matches!(d, Doc::Nil))
             .collect();
         match docs.len() {
             0 => Doc::Nil,
