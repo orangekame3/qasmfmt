@@ -334,7 +334,24 @@ fn format_barrier(b: ast::Barrier) -> Doc {
 }
 
 fn format_assignment(a: ast::AssignmentStmt) -> Doc {
-    Doc::text(a.syntax().text().to_string().trim())
+    let mut parts = vec![];
+
+    if let Some(idx) = a.indexed_identifier() {
+        parts.push(format_indexed_identifier(&idx));
+    } else if let Some(id) = a.identifier() {
+        parts.push(Doc::text(
+            id.ident_token().map(|t| t.to_string()).unwrap_or_default(),
+        ));
+    }
+
+    parts.push(Doc::text(" = "));
+
+    if let Some(rhs) = a.rhs() {
+        parts.push(format_expr(rhs));
+    }
+
+    parts.push(Doc::text(";"));
+    Doc::concat(parts)
 }
 
 fn format_classical_decl(c: ast::ClassicalDeclarationStatement) -> Doc {
