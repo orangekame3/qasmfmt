@@ -40,14 +40,11 @@ pub fn format_source(source: &str, config: &FormatConfig) -> Result<String, Form
 }
 
 fn format_file(ctx: &FormatContext, file: &ast::SourceFile) -> Doc {
-    let mut docs = Vec::new();
-
-    for stmt in file.statements() {
-        docs.push(format_stmt(ctx, stmt));
-        docs.push(Doc::hardline());
-    }
-
-    Doc::concat(docs)
+    let stmts: Vec<Doc> = file
+        .statements()
+        .map(|stmt| format_stmt(ctx, stmt))
+        .collect();
+    join(stmts, Doc::hardline())
 }
 
 fn format_stmt(ctx: &FormatContext, stmt: ast::Stmt) -> Doc {
