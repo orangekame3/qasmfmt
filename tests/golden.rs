@@ -23,12 +23,56 @@ fn run_test(name: &str) {
     }
 }
 
+// =============================================================================
+// Integration Tests
+// =============================================================================
+
 #[test]
 fn test_basic() {
     run_test("basic");
 }
 
 #[test]
-fn test_gate_def() {
-    run_test("gate_def");
+fn test_minified() {
+    run_test("minified");
+}
+
+// =============================================================================
+// Rule-based Tests
+// See: docs/src/rules/overview.md
+// =============================================================================
+
+#[test]
+fn test_version_declaration() {
+    run_test("version_declaration");
+}
+
+#[test]
+fn test_include_statement() {
+    run_test("include_statement");
+}
+
+#[test]
+fn test_declarations() {
+    run_test("declarations");
+}
+
+#[test]
+fn test_gate_calls() {
+    run_test("gate_calls");
+}
+
+#[test]
+fn test_gate_definition() {
+    run_test("gate_definition");
+}
+
+#[test]
+fn test_assignment() {
+    run_test("assignment");
+}
+
+#[test]
+fn test_barrier() {
+    run_test("barrier");
 }
