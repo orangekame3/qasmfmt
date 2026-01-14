@@ -8,6 +8,8 @@
 - Available as both Rust and Python package
 - CLI and library interfaces
 - stdin/stdout support for pipeline usage
+- Configuration file support (`qasmfmt.toml`)
+- Directory recursive processing
 
 ## Installation
 
@@ -36,31 +38,80 @@ cargo install --path .
 ### CLI
 
 ```bash
+qasmfmt [OPTIONS] [PATH]...
+```
+
+#### Modes (mutually exclusive)
+
+| Option | Description |
+|--------|-------------|
+| `-w, --write` | Write formatted output back to files (in-place) |
+| `--check` | Check if files are formatted (exit 1 if not) |
+| `--diff` | Show unified diff of formatting changes (exit 1 if diff exists) |
+
+#### Options
+
+| Option | Description |
+|--------|-------------|
+| `-i, --indent <N>` | Indentation size in spaces (default: 4) |
+| `--max-width <N>` | Maximum line width (default: 100) |
+| `--stdin-filename <PATH>` | Virtual filename for stdin input |
+| `--config <PATH>` | Path to configuration file |
+| `--no-config` | Disable automatic configuration file discovery |
+| `-V, --version` | Print version |
+| `-h, --help` | Print help |
+
+#### Examples
+
+```bash
 # Format file (print to stdout)
 qasmfmt input.qasm
 
 # Format file in-place
 qasmfmt -w input.qasm
-qasmfmt --write input.qasm
 
 # Check if file is formatted (for CI)
-qasmfmt -c input.qasm
 qasmfmt --check input.qasm
 
 # Show diff
-qasmfmt -d input.qasm
 qasmfmt --diff input.qasm
 
 # Format from stdin
 echo 'OPENQASM 3.0;qubit[2]q;' | qasmfmt
+echo 'OPENQASM 3.0;qubit[2]q;' | qasmfmt -
+
+# Format from stdin with virtual filename
+echo 'OPENQASM 3.0;qubit[2]q;' | qasmfmt --stdin-filename circuit.qasm -
 
 # Custom indent size
 qasmfmt -i 2 input.qasm
-qasmfmt --indent 2 input.qasm
 
-# Format multiple files
-qasmfmt -w *.qasm
+# Format all .qasm files in a directory (recursive)
+qasmfmt -w ./circuits/
+
+# Check all .qasm files in a directory
+qasmfmt --check ./src/
+
+# Use specific config file
+qasmfmt --config ./qasmfmt.toml input.qasm
+
+# Disable config file auto-discovery
+qasmfmt --no-config input.qasm
 ```
+
+### Configuration File
+
+qasmfmt automatically searches for `qasmfmt.toml` from the input file's directory upward.
+
+```toml
+# qasmfmt.toml
+indent_size = 2
+max_width = 80
+indent_style = "spaces"  # or "tabs"
+trailing_newline = true
+```
+
+CLI options override configuration file settings.
 
 ### Python Library
 
@@ -125,6 +176,14 @@ cx q[0], q[1];
 c = measure q;
 ```
 
+## Exit Codes
+
+| Code | Description |
+|------|-------------|
+| 0 | Success |
+| 1 | Error or formatting differences found (`--check`, `--diff`) |
+| 2 | Usage error (e.g., mutually exclusive options, stdin with `--write`) |
+
 ## CI Integration
 
 ### GitHub Actions
@@ -133,7 +192,7 @@ c = measure q;
 - name: Check OpenQASM formatting
   run: |
     pip install qasmfmt
-    qasmfmt --check **/*.qasm
+    qasmfmt --check .
 ```
 
 ### pre-commit
