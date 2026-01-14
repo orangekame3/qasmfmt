@@ -43,23 +43,23 @@ qasmfmt [OPTIONS] [PATH]...
 
 #### Modes (mutually exclusive)
 
-| Option | Description |
-|--------|-------------|
-| `-w, --write` | Write formatted output back to files (in-place) |
-| `--check` | Check if files are formatted (exit 1 if not) |
-| `--diff` | Show unified diff of formatting changes (exit 1 if diff exists) |
+| Option        | Description                                                     |
+| ------------- | --------------------------------------------------------------- |
+| `-w, --write` | Write formatted output back to files (in-place)                 |
+| `--check`     | Check if files are formatted (exit 1 if not)                    |
+| `--diff`      | Show unified diff of formatting changes (exit 1 if diff exists) |
 
 #### Options
 
-| Option | Description |
-|--------|-------------|
-| `-i, --indent <N>` | Indentation size in spaces (default: 4) |
-| `--max-width <N>` | Maximum line width (default: 100) |
-| `--stdin-filename <PATH>` | Virtual filename for stdin input |
-| `--config <PATH>` | Path to configuration file |
-| `--no-config` | Disable automatic configuration file discovery |
-| `-V, --version` | Print version |
-| `-h, --help` | Print help |
+| Option                    | Description                                    |
+| ------------------------- | ---------------------------------------------- |
+| `-i, --indent <N>`        | Indentation size in spaces (default: 4)        |
+| `--max-width <N>`         | Maximum line width (default: 100)              |
+| `--stdin-filename <PATH>` | Virtual filename for stdin input               |
+| `--config <PATH>`         | Path to configuration file                     |
+| `--no-config`             | Disable automatic configuration file discovery |
+| `-V, --version`           | Print version                                  |
+| `-h, --help`              | Print help                                     |
 
 #### Examples
 
@@ -178,11 +178,11 @@ c = measure q;
 
 ## Exit Codes
 
-| Code | Description |
-|------|-------------|
-| 0 | Success |
-| 1 | Error or formatting differences found (`--check`, `--diff`) |
-| 2 | Usage error (e.g., mutually exclusive options, stdin with `--write`) |
+| Code | Description                                                          |
+| ---- | -------------------------------------------------------------------- |
+| 0    | Success                                                              |
+| 1    | Error or formatting differences found (`--check`, `--diff`)          |
+| 2    | Usage error (e.g., mutually exclusive options, stdin with `--write`) |
 
 ## CI Integration
 
