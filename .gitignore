@@ -20,3 +20,33 @@ target
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 docs/internal/*
+
+# Python / Maturin
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+wheels/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# mypy / type checkers
+.mypy_cache/
+.pytype/
